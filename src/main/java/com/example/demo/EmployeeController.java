@@ -48,7 +48,7 @@ public class EmployeeController {
 	private ResponseEntity<Employee> getEmployee(@PathVariable int id) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
-		Employee emp = session.get(Employee.class, id);
+		Employee emp =(Employee) session.get(Employee.class, id);
 		return new ResponseEntity<>(emp, HttpStatus.OK);
 	}
 }

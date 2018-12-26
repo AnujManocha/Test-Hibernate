@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -32,7 +33,9 @@ public class Employee {
 	private int id;
 	private String firstName, lastName;
 
-	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+//	@OneToOne(targetEntity=Address.class,cascade=CascadeType.ALL)  
+	@OneToOne(targetEntity=Address.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)  
+//	@JoinColumn(name="Address_id")
 	@PrimaryKeyJoinColumn
 	private Address address;
 

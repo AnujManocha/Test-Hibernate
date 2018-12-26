@@ -1,7 +1,9 @@
 package com.example.Model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -23,6 +25,7 @@ public class Address {
 	@Column(name = "STATE_NAME")
 	private String state;
 
+//	@OneToOne(targetEntity=Employee.class)
 	@OneToOne(mappedBy="address")
 	private Employee employee;
 	
