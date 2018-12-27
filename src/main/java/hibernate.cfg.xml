@@ -21,6 +21,8 @@
 <!--             <mapping class="com.example.Model.Answer"/> -->
             <mapping class="com.example.Model.Employee"/>
             <mapping class="com.example.Model.Address"/>
+             <mapping class="com.example.manytoOne.Employee1"/>
+            <mapping class="com.example.manytoOne.Address1"/>
       </session-factory>      
       
  <!--    <session-factory>

@@ -3,53 +3,49 @@ package com.example.demo;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Model.Employee;
-
+import com.example.manytoOne.Address1;
+import com.example.manytoOne.Employee1;
 @RestController
-@RequestMapping("/employee")
-public class EmployeeController {
-	private static Logger logger = Logger.getLogger(EmployeeController.class);
+@RequestMapping("/manytoone")
+public class ManyToOneController {
+
 	StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
 
 	Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();
 
 	SessionFactory factory = meta.getSessionFactoryBuilder().build();
 
+	private static Logger logger = Logger.getLogger(ManyToOneController.class);
 	@PostMapping("/save")
-	public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		logger.info("saving user");
-		try {
-			session.persist(employee.getAddress());
-			session.persist(employee);
-		} catch (Exception e) {
+	private ResponseEntity<Object> saveEmployee(@RequestBody Employee1 emp) {
 
-		}
-		t.commit();
+		logger.info(emp);
+		Address1 add = new Address1();
+		add.setCity("kaithal");
+		add.setState("haryana");
+		emp.setAddress(add);
+		Session session = factory.openSession();
+		session.beginTransaction();
+		session.save(emp);
+		session.getTransaction().commit();
 		session.close();
-		return new ResponseEntity<Employee>(employee, HttpStatus.CREATED);
-	}
+		logger.debug("saved");
+		logger.info("saved");
+		
+		session.beginTransaction();
 
-	@GetMapping("/get/{id}")
-	private ResponseEntity<Employee> getEmployee(@PathVariable int id) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		Employee emp =(Employee) session.get(Employee.class, id);
-		return new ResponseEntity<>(emp, HttpStatus.OK);
+		return new ResponseEntity<Object>(emp, HttpStatus.OK);
+
 	}
 }
